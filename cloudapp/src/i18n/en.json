@@ -1,0 +1,34 @@
+{
+	"Main": {
+		"Intro": "Select the invoice(s) for which you wish to apply the invoice line tax settings.",
+		"Calculate": "Apply tax settings",
+		"NoRecords": "This app allows you to calculate taxes for selected invoices. Please navigate to an invoice record."
+	},
+	"Settings": {
+		"Back": "Back",
+		"Rates": "Rates",
+		"Save": "Save",
+		"SetAll": "Set all",
+		"Title": "Settings",
+		"Reset": "Reset",
+		"Discard": "Are you sure you wish to discard your changes?",
+		"SetAllLabel": "Enter value for all types"
+	},
+	"Invoices": {
+		"Title": "Invoices",
+		"Submit": "Update Invoices",
+		"Cancel": "Cancel",
+		"Headings": {
+			"number": "No.",
+			"type": "Type",
+			"price": "Price",
+			"current_tax": "Current Tax",
+			"new_tax": "New Tax"
+		},
+		"InvoiceError": "Invoice {{invoiceNumber}} could not be updated: {{message}}.",
+		"InvoiceSuccess": "Successfully updated {{num}} invoice lines for invoice {{invoiceNumber}}.",
+		"InvoiceLineError": "Could not update invoice line {{lineNumber}}: {{message}}."
+	},
+	"CheckAll": "Check/Uncheck All",
+	"Back": "Back"
+}

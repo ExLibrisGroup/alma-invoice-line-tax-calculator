@@ -1,0 +1,17 @@
+.loading-shade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+table.mat-table {
+  width: calc(100% - 10px);
+  margin-bottom: 20px;
+}

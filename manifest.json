@@ -1,0 +1,19 @@
+{
+   "id": "invoice-line-tax-calculator",
+   "title": "Invoice Line Tax Calculator",
+   "description": "Adds tax to invoice lines",
+   "subtitle": "Add tax to invoice lines",
+   "author": "Josh Weisman",
+   "icon": {
+      "type": "font",
+      "value": "fa fa-calculator"
+   },
+   "pages": {
+      "settings": "/#/settings"
+   },
+   "contentSecurity": {
+      "sandbox": {
+         "modals": true
+      }
+   }
+}

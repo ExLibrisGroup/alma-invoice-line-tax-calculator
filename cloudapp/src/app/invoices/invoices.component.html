@@ -1,0 +1,66 @@
+<div class="title">
+  <h1 translate>Invoices.Title</h1>
+  <a [routerLink]="['']">
+    <button mat-raised-button>
+      <mat-icon>arrow_back</mat-icon>
+      {{'Back' | translate}}
+    </button>
+    </a>
+</div>
+
+<div class="loading-shade" *ngIf="loading">
+  <mat-progress-spinner 
+    mode="indeterminate"
+    diameter="50"
+    >
+  </mat-progress-spinner>
+</div>
+
+<div *ngIf="!results; else resultPanel">
+  <div *ngFor="let invoice of invoices">
+    <h3>{{invoice.number}} ({{invoice.vendor.desc}})</h3>
+    <table mat-table [dataSource]="invoice.invoice_lines?.invoice_line" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>{{'Invoices.Headings.number'|translate}}</th>
+        <td mat-cell *matCellDef="let line"> {{line.number}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>{{'Invoices.Headings.type'|translate}}</th>
+        <td mat-cell *matCellDef="let line"> {{line.type.desc}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>{{'Invoices.Headings.price'|translate}}</th>
+        <td mat-cell *matCellDef="let line"> {{line.price}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="current_tax">
+        <th mat-header-cell *matHeaderCellDef>{{'Invoices.Headings.current_tax'|translate}}</th>
+        <td mat-cell *matCellDef="let line"> {{line.invoice_line_vat.percentage}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="new_tax">
+        <th mat-header-cell *matHeaderCellDef>{{'Invoices.Headings.new_tax'|translate}}</th>
+        <td mat-cell *matCellDef="let line"> {{calculateTax(line)}} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <div class="commands-container">
+    <button mat-stroked-button (click)="submit()" color="primary">{{'Invoices.Submit' | translate}}</button>
+    <button mat-stroked-button routerLink="/" color="accent">{{'Invoices.Cancel' | translate}}</button>
+  </div>
+</div>
+<ng-template #resultPanel>
+    <div *ngFor="let result of results">
+      <p>{{result.msg}}</p>
+      <ul>
+        <li *ngFor="let error of result.errors">{{error}}</li>
+      </ul>
+    </div>
+  <button mat-stroked-button routerLink="/" color="accent">{{'Back' | translate}}</button>
+</ng-template>

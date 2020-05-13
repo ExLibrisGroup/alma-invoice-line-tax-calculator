@@ -1,0 +1,14 @@
+<div *ngIf="entities.length>0 else noEntities">
+  <p translate>Main.Intro</p>
+  <app-select-entities #selectEntities 
+    (entitySelected)="onEntitySelected($event)"
+    [entityList]="entities"
+    [selectedEntities]="ids">
+  </app-select-entities>
+  <div class="commands-container">
+    <button mat-stroked-button (click)="calculate()" color="primary" [disabled]="ids.size==0">{{'Main.Calculate' | translate}}</button>
+  </div>
+</div>
+<ng-template #noEntities>      
+    <p translate>Main.NoRecords</p>
+</ng-template>

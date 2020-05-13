@@ -1,0 +1,51 @@
+<div class="title">
+  <h1 translate>Settings.Title</h1>
+  <a [routerLink]="['']">
+    <button mat-raised-button>
+      <mat-icon>arrow_back</mat-icon>
+      {{'Back' | translate}}
+    </button>
+    </a>
+</div>
+
+<div *ngIf="form"> 
+  <form [formGroup]="form">
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Rates
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-grid-list cols=3 rowHeight="75px">
+        <mat-grid-tile *ngFor="let rate of rates.controls">
+          <mat-form-field appearance="outline" class="rate" floatLabel="always">
+            <mat-label>{{rate.controls.description.value}}</mat-label>
+            <input matInput [formControl]="rate.controls.percent">  
+            <button mat-button *ngIf="rate.controls.percent.value" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="rate.controls.percent.setValue(''); form.markAsDirty()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-action-row>
+        <mat-form-field appearance="outline">
+          <mat-label>{{'Settings.SetAll' | translate}}</mat-label>
+          <input matInput type="text" #setAllVal>
+          <button mat-flat-button type="button" matSuffix (click)="setAll(setAllVal.value); setAllVal.value=''">
+            <mat-icon>done_outline</mat-icon>
+          </button>
+          <mat-hint>{{'Settings.SetAllLabel' | translate}}</mat-hint>
+        </mat-form-field>
+      </mat-action-row> 
+    </mat-expansion-panel>
+  </form>
+  <div class="commands-container">
+    <button mat-stroked-button type="button" color="primary" (click)="save()" [disabled]="!form.dirty">{{'Settings.Save' | translate}}</button>
+    <button mat-stroked-button type="button" (click)="reset()" [disabled]="!form.dirty">{{'Settings.Reset' | translate}}</button> 
+    <mat-spinner diameter="30" class="spinner" *ngIf="saving"></mat-spinner>
+  </div>
+
+
+
+
+</div>
