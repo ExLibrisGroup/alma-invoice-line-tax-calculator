@@ -1,5 +1,5 @@
 {
-   "id": "invoice-line-tax-calculator",
+   "id": "jweisman/invoice-line-tax-calculator",
    "title": "Invoice Line Tax Calculator",
    "description": "Adds tax to invoice lines",
    "subtitle": "Add tax to invoice lines",
@@ -15,5 +15,8 @@
       "sandbox": {
          "modals": true
       }
-   }
+   },
+   "entities": [
+      "INVOICE"
+   ]
 }

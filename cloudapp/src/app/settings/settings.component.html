@@ -28,13 +28,12 @@
         </mat-grid-tile>
       </mat-grid-list>
       <mat-action-row>
-        <mat-form-field appearance="outline">
-          <mat-label>{{'Settings.SetAll' | translate}}</mat-label>
+        <mat-form-field>
+          <mat-placeholder>{{'Settings.SetAll' | translate}}</mat-placeholder>
           <input matInput type="text" #setAllVal>
-          <button mat-flat-button type="button" matSuffix (click)="setAll(setAllVal.value); setAllVal.value=''">
-            <mat-icon>done_outline</mat-icon>
+          <button mat-button matSuffix mat-stroked-button aria-label="Set All"(click)="setAll(setAllVal.value); setAllVal.value=''">
+            <mat-icon>check_circle_outline</mat-icon>
           </button>
-          <mat-hint>{{'Settings.SetAllLabel' | translate}}</mat-hint>
         </mat-form-field>
       </mat-action-row> 
     </mat-expansion-panel>

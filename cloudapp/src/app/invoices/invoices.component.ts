@@ -58,7 +58,7 @@ export class InvoicesComponent implements OnInit {
             { msg: this.translate.instant('Invoices.InvoiceError',   
               { invoiceNumber: invoice.invoiceNumber, message: invoice.message})} :
             { msg: this.translate.instant('Invoices.InvoiceSuccess', 
-              { invoiceNumber: invoice.invoiceNumber, num: invoice.lines.filter(line=>!line.isError).length}),
+              { invoiceNumber: invoice.invoiceNumber, num: invoice.lines.filter(line=>!line.isError).length, total: invoice.lines.length}),
                 errors: invoice.lines.filter(line=>line.isError).map(line=>this.translate.instant('Invoices.InvoiceLineError', { lineNumber: line.lineNumber, message: line.message }))}
         ),
       complete: () => this.loading = false
@@ -79,8 +79,8 @@ export class InvoicesComponent implements OnInit {
     }
     return this.restService.call({
       url: invoice.link,
-      //method: HttpMethod.PUT,
-      //requestBody: invoice
+      method: HttpMethod.PUT,
+      requestBody: invoice
     }).pipe(
       catchError(err=>of( {
         isError: true, invoiceNumber: invoice.number, message: err.message
@@ -97,8 +97,14 @@ export class InvoicesComponent implements OnInit {
     const percentage = this.calculateTax(line);
     if (percentage && percentage != line.invoice_line_vat.percentage) {
       line.invoice_line_vat = { percentage }
+      /* Remove amount from funds (can't have both amount and percentate) */
+      if (line.fund_distribution) {
+        for (let i=0; i < line.fund_distribution.length; i++) {
+          delete line.fund_distribution[i].amount;
+        }
+      }
       return this.restService.call({
-        url: `/acq/invoices/${invoice.id}/lines/${line.id}`,
+        url: `${invoice.link}/lines/${line.id}`,
         method: HttpMethod.PUT,
         requestBody: line
       }).pipe(

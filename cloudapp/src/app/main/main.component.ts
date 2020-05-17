@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CloudAppEventsService, Entity } from '@exlibris/exl-cloudapp-angular-lib';
+import { CloudAppEventsService, Entity, EntityType } from '@exlibris/exl-cloudapp-angular-lib';
 import { Router } from '@angular/router';
 
 @Component({
@@ -20,8 +20,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.pageLoad$ = this.eventsService.onPageLoad( pageInfo => {
-      this.entities = (pageInfo.entities||[]);
-    });  }
+      this.entities = (pageInfo.entities||[]).filter(e=>e.type==EntityType.INVOICE);
+    });  
+  }
 
   ngOnDestroy(): void {
     this.pageLoad$.unsubscribe();

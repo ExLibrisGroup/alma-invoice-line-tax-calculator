@@ -13,7 +13,7 @@
             "fileMatch": [
                 "/manifest.json"
             ],
-            "url": ".vscode/manifest.schema.json"
+            "url": "/node_modules/@exlibris/exl-cloudapp-base/manifest.schema.json"
         }
     ]
     
