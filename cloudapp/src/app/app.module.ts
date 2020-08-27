@@ -12,6 +12,7 @@ import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SelectEntitiesComponent } from './select-entities/select-entities.component';
 import { InvoicesComponent } from './invoices/invoices.component';
+import { SettingsService } from './models/settings.service';
 
 export function getToastrModule() {
   return ToastrModule.forRoot({
@@ -39,7 +40,9 @@ export function getToastrModule() {
       getTranslateModule(),
       getToastrModule()
    ],
-   providers: [],
+   providers: [
+      SettingsService
+   ],
    bootstrap: [
       AppComponent
    ]

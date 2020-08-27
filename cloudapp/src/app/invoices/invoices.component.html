@@ -1,7 +1,7 @@
 <div class="title">
   <h1 translate>Invoices.Title</h1>
   <a [routerLink]="['']">
-    <button mat-raised-button>
+    <button mat-flat-button color="secondary">
       <mat-icon>arrow_back</mat-icon>
       {{'Back' | translate}}
     </button>
@@ -51,8 +51,8 @@
     </table>
   </div>
   <div class="commands-container">
-    <button mat-stroked-button (click)="submit()" color="primary">{{'Invoices.Submit' | translate}}</button>
-    <button mat-stroked-button routerLink="/" color="accent">{{'Invoices.Cancel' | translate}}</button>
+    <button mat-flat-button (click)="submit()" color="primary">{{'Invoices.Submit' | translate}}</button>
+    <button mat-flat-button routerLink="/" color="secondary">{{'Invoices.Cancel' | translate}}</button>
   </div>
 </div>
 <ng-template #resultPanel>
@@ -62,5 +62,5 @@
         <li *ngFor="let error of result.errors">{{error}}</li>
       </ul>
     </div>
-  <button mat-stroked-button routerLink="/" color="accent">{{'Back' | translate}}</button>
+  <button mat-flat-button routerLink="/" color="accent">{{'Back' | translate}}</button>
 </ng-template>

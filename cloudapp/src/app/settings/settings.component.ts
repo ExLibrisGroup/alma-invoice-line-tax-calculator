@@ -1,10 +1,8 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { CloudAppSettingsService, CloudAppRestService, FormGroupUtil } from '@exlibris/exl-cloudapp-angular-lib';
-import { getSettings } from '../models/settings';
+import { FormGroupUtil } from '@exlibris/exl-cloudapp-angular-lib';
+import { SettingsService } from '../models/settings.service';
 import { ToastrService } from 'ngx-toastr';
-import { CanDeactivate } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
@@ -16,8 +14,7 @@ export class SettingsComponent implements OnInit {
   saving = false;
   
   constructor(
-    private settingsService: CloudAppSettingsService,
-    private restService: CloudAppRestService,
+    private settingsService: SettingsService,
     private toastr: ToastrService
   ) { }
 
@@ -26,11 +23,12 @@ export class SettingsComponent implements OnInit {
   }
 
   load() {
-    getSettings(this.restService, this.settingsService)
+    this.settingsService.getSettings()
       .subscribe(settings=>this.form = FormGroupUtil.toFormGroup(settings));
   }
 
-  setAll(value) {
+  setAll(value: number) {
+    value = Number(value);
     for ( let i = 0; i < this.rates.length; i++) {
       this.rates.at(i).patchValue({percent: value});
     }

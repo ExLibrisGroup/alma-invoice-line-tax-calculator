@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CloudAppRestService, CloudAppSettingsService, HttpMethod } from '@exlibris/exl-cloudapp-angular-lib';
 import { forkJoin, of } from 'rxjs';
-import { Settings, getSettings } from '../models/settings';
-import { tap, switchMap, catchError, concatMap, map } from 'rxjs/operators';
+import { Settings, SettingsService } from '../models/settings.service';
+import { tap, switchMap, concatMap, map } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { withErrorChecking } from '../utils';
 
 @Component({
   selector: 'app-invoices',
@@ -21,13 +22,13 @@ export class InvoicesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private restService: CloudAppRestService,
-    private settingsService: CloudAppSettingsService,
+    private settingsService: SettingsService,
     private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.loading = true;
-    getSettings(this.restService, this.settingsService).pipe(
+    this.settingsService.getSettings().pipe(
       tap(settings=>this.settings = settings),
       switchMap(() => this.getInvoices())
     )
@@ -42,7 +43,7 @@ export class InvoicesComponent implements OnInit {
     return forkJoin(ids.split(',').map(id=>this.restService.call(`/acq/invoices/${id}`)))
   }
 
-  calculateTax(line) {
+  calculateTax(line): number {
     const rate = this.settings.rates.find(r=>r.code===line.type.value);
     return rate && rate.percent;
   }
@@ -54,12 +55,14 @@ export class InvoicesComponent implements OnInit {
     .subscribe({
       next: (response: any[]) => 
         this.results = response.map(invoice=>
-          invoice.isError ? 
-            { msg: this.translate.instant('Invoices.InvoiceError',   
-              { invoiceNumber: invoice.invoiceNumber, message: invoice.message})} :
-            { msg: this.translate.instant('Invoices.InvoiceSuccess', 
-              { invoiceNumber: invoice.invoiceNumber, num: invoice.lines.filter(line=>!line.isError).length, total: invoice.lines.length}),
-                errors: invoice.lines.filter(line=>line.isError).map(line=>this.translate.instant('Invoices.InvoiceLineError', { lineNumber: line.lineNumber, message: line.message }))}
+          invoice.isError 
+          ? { 
+              msg: this.translate.instant('Invoices.InvoiceError', { invoiceNumber: invoice.invoiceNumber, message: invoice.message})
+            } 
+          : { 
+              msg: this.translate.instant('Invoices.InvoiceSuccess', { invoiceNumber: invoice.invoiceNumber, num: invoice.lines.filter(line=>!line.isError).length, total: invoice.lines.length}),
+              errors: invoice.lines.filter(line=>line.isError).map(line=>this.translate.instant('Invoices.InvoiceLineError', { lineNumber: line.lineNumber, message: line.message }))
+            }
         ),
       complete: () => this.loading = false
     })
@@ -77,41 +80,40 @@ export class InvoicesComponent implements OnInit {
     if (lineUpdates.length==0) {
       return of({invoiceNumber: invoice.number, lines: []})
     }
-    return this.restService.call({
-      url: invoice.link,
-      method: HttpMethod.PUT,
-      requestBody: invoice
-    }).pipe(
-      catchError(err=>of( {
-        isError: true, invoiceNumber: invoice.number, message: err.message
-      })),
-      concatMap(resp=> resp.isError ? of(resp) :
-        forkJoin(lineUpdates).pipe(
-          map( resp => ({ invoiceNumber: invoice.number, lines: resp }))
+    return withErrorChecking(this.restService.call(
+      {
+        url: invoice.link,
+        method: HttpMethod.PUT,
+        requestBody: invoice
+      }), {invoiceNumber: invoice.number})
+      .pipe(
+        concatMap(resp=> resp.isError 
+          ? of(resp) 
+          : forkJoin(lineUpdates)
+            .pipe(
+              map( resp => ({ invoiceNumber: invoice.number, lines: resp }))
+            )
         )
-      )
-    );
+      );
   }
 
   updateInvoiceLine(invoice, line) {
     const percentage = this.calculateTax(line);
     if (percentage && percentage != line.invoice_line_vat.percentage) {
       line.invoice_line_vat = { percentage }
-      /* Remove amount from funds (can't have both amount and percentate) */
+      /* Remove amount from funds (can't have both amount and percentage) */
       if (line.fund_distribution) {
         for (let i=0; i < line.fund_distribution.length; i++) {
           delete line.fund_distribution[i].amount;
         }
       }
-      return this.restService.call({
-        url: `${invoice.link}/lines/${line.id}`,
-        method: HttpMethod.PUT,
-        requestBody: line
-      }).pipe(
-        catchError(err=>of({
-          isError: true, lineNumber: line.number, message: err.message
-        }))
-      )
+      return withErrorChecking(this.restService.call(
+        {
+          url: `${invoice.link}/lines/${line.id}`,
+          method: HttpMethod.PUT,
+          requestBody: line
+        }
+      ), {lineNumber: line.number});
     }
   }
 }

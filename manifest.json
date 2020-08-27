@@ -1,15 +1,16 @@
 {
    "id": "jweisman/invoice-line-tax-calculator",
    "title": "Invoice Line Tax Calculator",
-   "description": "Adds tax to invoice lines",
-   "subtitle": "Add tax to invoice lines",
+   "description": "Allows you to configure tax rates per invoice line type. When you select an invoice from a list in Alma, the app shows you the new tax rates per line and updates the invoice lines.",
+   "subtitle": "Adds tax to invoice lines",
    "author": "Josh Weisman",
    "icon": {
       "type": "font",
       "value": "fa fa-calculator"
    },
    "pages": {
-      "settings": "/#/settings"
+      "settings": "/#/settings",
+      "help": "https://github.com/jweisman/alma-invoice-line-tax-calculator/wiki/Help"
    },
    "contentSecurity": {
       "sandbox": {

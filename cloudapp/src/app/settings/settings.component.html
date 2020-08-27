@@ -1,14 +1,17 @@
-<div class="title">
-  <h1 translate>Settings.Title</h1>
-  <a [routerLink]="['']">
-    <button mat-raised-button>
+<div class="loading-shade" *ngIf="saving">
+  <mat-progress-spinner mode="indeterminate" diameter="50">
+  </mat-progress-spinner>
+</div>
+<div *ngIf="form"> 
+  <div class="cloudapp-actions">
+    <button mat-flat-button color="secondary" [routerLink]="['/']">
       <mat-icon>arrow_back</mat-icon>
       {{'Back' | translate}}
     </button>
-    </a>
-</div>
-
-<div *ngIf="form"> 
+    <button mat-flat-button type="button" color="secondary" (click)="reset()" [disabled]="!form.dirty">{{'Settings.Reset' | translate}}</button> 
+    <button mat-flat-button type="button" color="primary" (click)="save()" [disabled]="!form.dirty">{{'Settings.Save' | translate}}</button>
+  </div>
+  <h1 translate>Settings.Title</h1>
   <form [formGroup]="form">
     <mat-expansion-panel expanded="true">
       <mat-expansion-panel-header>
@@ -20,7 +23,7 @@
         <mat-grid-tile *ngFor="let rate of rates.controls">
           <mat-form-field appearance="outline" class="rate" floatLabel="always">
             <mat-label>{{rate.controls.description.value}}</mat-label>
-            <input matInput [formControl]="rate.controls.percent">  
+            <input matInput [formControl]="rate.controls.percent" type="number">  
             <button mat-button *ngIf="rate.controls.percent.value" matSuffix mat-icon-button aria-label="Clear" tabindex="-1" (click)="rate.controls.percent.setValue(''); form.markAsDirty()">
               <mat-icon>close</mat-icon>
             </button>
@@ -30,7 +33,7 @@
       <mat-action-row>
         <mat-form-field>
           <mat-placeholder>{{'Settings.SetAll' | translate}}</mat-placeholder>
-          <input matInput type="text" #setAllVal>
+          <input matInput type="number" #setAllVal>
           <button mat-button matSuffix mat-stroked-button aria-label="Set All"(click)="setAll(setAllVal.value); setAllVal.value=''">
             <mat-icon>check_circle_outline</mat-icon>
           </button>
@@ -38,13 +41,4 @@
       </mat-action-row> 
     </mat-expansion-panel>
   </form>
-  <div class="commands-container">
-    <button mat-stroked-button type="button" color="primary" (click)="save()" [disabled]="!form.dirty">{{'Settings.Save' | translate}}</button>
-    <button mat-stroked-button type="button" (click)="reset()" [disabled]="!form.dirty">{{'Settings.Reset' | translate}}</button> 
-    <mat-spinner diameter="30" class="spinner" *ngIf="saving"></mat-spinner>
-  </div>
-
-
-
-
 </div>
