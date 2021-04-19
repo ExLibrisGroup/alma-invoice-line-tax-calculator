@@ -1,9 +1,9 @@
 {
    "id": "jweisman/invoice-line-tax-calculator",
    "title": "Invoice Line Tax Calculator",
-   "description": "Allows you to configure tax rates per invoice line type. When you select an invoice from a list in Alma, the app shows you the new tax rates per line and updates the invoice lines.",
    "subtitle": "Adds tax to invoice lines",
    "author": "Ex Libris",
+   "description": "Allows you to configure tax rates per invoice line type. When you select an invoice from a list in Alma, the app shows you the new tax rates per line and updates the invoice lines.",
    "icon": {
       "type": "font",
       "value": "fa fa-calculator"
@@ -19,5 +19,9 @@
    },
    "entities": [
       "INVOICE"
-   ]
+   ],
+   "fullscreen": {
+      "allow": true,
+      "open": false
+   }
 }

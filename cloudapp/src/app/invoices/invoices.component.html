@@ -1,13 +1,8 @@
-<div class="title">
-  <h1 translate>Invoices.Title</h1>
-  <a [routerLink]="['']">
-    <button mat-flat-button color="secondary">
-      <mat-icon>arrow_back</mat-icon>
-      {{'Back' | translate}}
-    </button>
-    </a>
+<div class="eca-actions">
+  <button mat-flat-button routerLink="/" color="secondary">{{'Invoices.Cancel' | translate}}</button>
+  <button mat-flat-button (click)="submit()" color="primary">{{'Invoices.Submit' | translate}}</button>
 </div>
-
+<h1 translate>Invoices.Title</h1>
 <div class="loading-shade" *ngIf="loading">
   <mat-progress-spinner 
     mode="indeterminate"
@@ -49,10 +44,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-  </div>
-  <div class="commands-container">
-    <button mat-flat-button (click)="submit()" color="primary">{{'Invoices.Submit' | translate}}</button>
-    <button mat-flat-button routerLink="/" color="secondary">{{'Invoices.Cancel' | translate}}</button>
   </div>
 </div>
 <ng-template #resultPanel>
