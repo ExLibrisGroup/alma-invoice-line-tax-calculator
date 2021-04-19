@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { FormGroupUtil } from '@exlibris/exl-cloudapp-angular-lib';
+import { FormGroupUtil, AlertService } from '@exlibris/exl-cloudapp-angular-lib';
 import { SettingsService } from '../models/settings.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +14,7 @@ export class SettingsComponent implements OnInit {
   
   constructor(
     private settingsService: SettingsService,
-    private toastr: ToastrService
+    private alert: AlertService,
   ) { }
 
   ngOnInit() {
@@ -39,10 +38,10 @@ export class SettingsComponent implements OnInit {
     this.saving = true;
     this.settingsService.set(this.form.value).subscribe(
       response => {
-        this.toastr.success('Settings successfully saved.');
+        this.alert.success('Settings successfully saved.');
         this.form.markAsPristine();
       },
-      err => this.toastr.error(err.message),
+      err => this.alert.error(err.message),
       ()  => this.saving = false
     );
   }

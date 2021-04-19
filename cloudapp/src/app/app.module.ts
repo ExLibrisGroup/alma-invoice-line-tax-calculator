@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule, getTranslateModule } from '@exlibris/exl-cloudapp-angular-lib';
-import { ToastrModule } from 'ngx-toastr';
+import { MaterialModule, getTranslateModule, AlertModule } from '@exlibris/exl-cloudapp-angular-lib';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -13,13 +12,6 @@ import { SettingsComponent } from './settings/settings.component';
 import { SelectEntitiesComponent } from './select-entities/select-entities.component';
 import { InvoicesComponent } from './invoices/invoices.component';
 import { SettingsService } from './models/settings.service';
-
-export function getToastrModule() {
-  return ToastrModule.forRoot({
-    positionClass: 'toast-top-right',
-    timeOut: 2000
-  });
-}
 
 @NgModule({
    declarations: [
@@ -38,7 +30,7 @@ export function getToastrModule() {
       FormsModule,
       ReactiveFormsModule,
       getTranslateModule(),
-      getToastrModule()
+      AlertModule,
    ],
    providers: [
       SettingsService
